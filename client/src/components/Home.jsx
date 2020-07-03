@@ -35,26 +35,6 @@ class Home extends Component {
     }
 
     render() {
-        //console.log(this.state.query)
-        const { weather } = this.state;
-
-        const logic = weather.map(a => {
-            if (a.wind.speed > 5) {
-                return (
-                    <div>
-                        <h5>too fast</h5>
-                    </div>
-                )
-            } else {
-                return (
-                    <div>
-                        <h5>too slow</h5>
-                    </div>
-                )
-            }
-        });
-
-
         return (
             <div className="container">
                 <div className="row">
@@ -64,8 +44,8 @@ class Home extends Component {
                         <hr />
 
                         <form onSubmit={e => this.fetchWeather(e)}>
-                            <div class="form-group">
-                                <label for="formGroupExampleInput2">Enter Your City</label>
+                            <div className="form-group">
+                                <label htmlFor="formGroupExampleInput2">Enter Your City</label>
                                 <input value={this.state.query} onChange={e => this.setState({ query: e.target.value })} name="query" type="text" class="form-control" id="formGroupExampleInput2" placeholder="Ex: Chicago" />
                                 <br/>
                                 <button className="btn btn-primary">Submit</button>                            
@@ -73,7 +53,7 @@ class Home extends Component {
                         </form>
                     </div>
                 </div>
-                <New weather={this.state.weather} />
+                <New  city={this.state.city} />
             </div>
         );
     }
