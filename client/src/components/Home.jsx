@@ -10,7 +10,8 @@ class Home extends Component {
             api: [],
             query: "",
             city: [],
-            wind: []
+            wind: [],
+            visable: false
         }
         this.fetchWeather = this.fetchWeather.bind(this);
     }
@@ -28,9 +29,10 @@ class Home extends Component {
                     weather: weatherData.data.list,
                     city: weatherData.data.city,
                     //api: backendData.data,
-                    wind: weatherData.data.list.map(x => x.wind)
+                    wind: weatherData.data.list.map(x => x.wind),
+                    visable: true
                 })
-                console.log(this.state);
+                //console.log(this.state);
             }))
     }
 
@@ -38,12 +40,12 @@ class Home extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-6">
                         <h1>Party Panner</h1>
                         <small>Plan the perfect picnic!</small>
                         <hr />
 
-                        <form onSubmit={e => this.fetchWeather(e)}>
+                        <form onSubmit={e => this.fetchWeather(e)} >
                             <div className="form-group">
                                 <label htmlFor="formGroupExampleInput2">Enter Your City</label>
                                 <input value={this.state.query} onChange={e => this.setState({ query: e.target.value })} name="query" type="text" class="form-control" id="formGroupExampleInput2" placeholder="Ex: Chicago" />
@@ -53,7 +55,7 @@ class Home extends Component {
                         </form>
                     </div>
                 </div>
-                <New  city={this.state.city} />
+                { this.state.visable ? <New city={this.state.city}/> : null}
             </div>
         );
     }

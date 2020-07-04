@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function New(props) {
-    console.log(props)
+    console.log('my props ' ,props)
     return (
         <div className="row">
             <div className="col-md-6">
