@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using server.Models;
 
 namespace HomeController.Controllers {
-    [Route("[controller]")]
+    [Route ("[controller]")]
     [ApiController]
     public class HomeController : ControllerBase {
         private readonly airtrafficContext _dbContext;
@@ -18,36 +18,46 @@ namespace HomeController.Controllers {
             _dbContext = context;
         }
 
-        [HttpGet("search/{xx}")]
-        public IActionResult Search(string xx) {
-            
-            var res = (from airportTable in _dbContext.Airports
-                        join runwayTable in _dbContext.Runways
-                        on airportTable.Ident equals runwayTable.AirportIdent
-                        where airportTable.Municipality == xx && airportTable.Type != "heliport" && airportTable.Type != "closed"
-                        select new{
-                            airportName= airportTable.Name,
-                            airportType = airportTable.Type,
-                            city = airportTable.Municipality,
-                            lowEnd = runwayTable.LeIdent,
-                            highEnd = runwayTable.HeIdent
-                        }).ToList();
-            return Ok(res);
+        [HttpGet ("search/{xx}")]
+        public IActionResult Search (string xx) {
+
+            var res = (from airportTable in _dbContext.Airports join runwayTable in _dbContext.Runways on airportTable.Ident equals runwayTable.AirportIdent where airportTable.Municipality == xx && airportTable.Type != "heliport" && airportTable.Type != "closed"
+
+                select new {
+                    airportName = airportTable.Name,
+                        airportType = airportTable.Type,
+                        city = airportTable.Municipality,
+                        lowEnd = runwayTable.LeIdent,
+                        highEnd = runwayTable.HeIdent,
+                        airportId = airportTable.Id
+                }).ToList ();
+
+            var finalResult =
+                from r in res
+            group r by new { r.airportName, r.airportType, r.city, r.airportId } into g
+            select new {
+            g.Key.airportName,
+            g.Key.airportType,
+            g.Key.city,
+            g.Key.airportId,
+            lowEnd = g.Select (r => r.lowEnd).Aggregate ((x, y) => x + "," + y),
+            highEnd = g.Select (r => r.highEnd).Aggregate ((x, y) => x + "," + y)
+            };
+            return Ok (finalResult);
         }
 
-        [HttpGet("join")]
-        public IActionResult GetTable() {
-            List<Airports> airports = _dbContext.Airports.ToList();
-            List<Runways> runways = _dbContext.Runways.ToList();
+        [HttpGet ("join")]
+        public IActionResult GetTable () {
+            List<Airports> airports = _dbContext.Airports.ToList ();
+            List<Runways> runways = _dbContext.Runways.ToList ();
             var res = from data in airports
-                        join st in  runways
-                        on data.Ident equals st.AirportIdent
-                        select new { City = data.Municipality, he = st.AirportIdent };
-            foreach(var i in res) 
-            {
-                return Ok(i);
+            join st in runways
+            on data.Ident equals st.AirportIdent
+            select new { City = data.Municipality, he = st.AirportIdent };
+            foreach (var i in res) {
+                return Ok (i);
             }
-            return Ok();
+            return Ok ();
         }
     }
 }
