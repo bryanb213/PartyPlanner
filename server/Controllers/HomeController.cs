@@ -20,21 +20,18 @@ namespace HomeController.Controllers {
 
         [HttpGet("search/{xx}")]
         public IActionResult Search(string xx) {
-            xx.ToLower();
+            
             var res = (from airportTable in _dbContext.Airports
                         join runwayTable in _dbContext.Runways
                         on airportTable.Ident equals runwayTable.AirportIdent
-                        where airportTable.Name == xx
+                        where airportTable.Municipality == xx && airportTable.Type != "heliport" && airportTable.Type != "closed"
                         select new{
-                            airportTable= airportTable.Name,
+                            airportName= airportTable.Name,
+                            airportType = airportTable.Type,
                             city = airportTable.Municipality,
-                            runwayType = runwayTable.Surface
+                            lowEnd = runwayTable.LeIdent,
+                            highEnd = runwayTable.HeIdent
                         }).ToList();
-            foreach(var i in res)
-            {
-                return Ok(i);
-            }
-
             return Ok(res);
         }
 
