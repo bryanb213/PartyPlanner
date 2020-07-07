@@ -19,30 +19,13 @@ class Home extends Component {
     fetchWeather = (event) => {
         event.preventDefault();
         const { query } = this.state;
-        //var apiKey = 'e7f6b2ade7d4404e80c9d27e0ad3d479';
-        //var requestOne = axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${query}&appid=${apiKey}`);
-        var requestTwo = `http://localhost:5000/home/search/${query}`;
-
-        // axios.all([requestOne, requestTwo])
-        //     .then(axios.spread((weatherData, backendData) => {
-        //         this.setState({
-        //         //     //weather: weatherData.data
-        //         //     //city: weatherData.data.city,
-        //             airportData: backendData.data,
-        //         //     //wind: weatherData.data.list.map(x => x.wind),
-        //         visable: true
-        //         })
-        //         //console.log(this.state);
-        //     }))
-
+        const requestTwo = `http://localhost:5000/home/search/${query}`;
         axios.get(requestTwo)
         .then(res => {
-            this.setState({
-                
+            this.setState({ 
                 airportData: res.data,
                 visable: true
             })
-            //console.log(this.state);
         })
         .catch(res => {
             console.log(res)
