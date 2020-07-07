@@ -26,7 +26,8 @@ namespace HomeController.Controllers {
                 airportData.Type != "closed"
                 select new {
                     airportName = airportData.Name,
-                        airportsId = airportData.Id
+                    airportId = airportData.Id,
+                    airportCity = airportData.Municipality
                 }).ToList ();
             return Ok (airports);
         }

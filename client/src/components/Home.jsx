@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import New from './New';
 import Airports from './Airports';
 
 class Home extends Component {
@@ -20,21 +19,34 @@ class Home extends Component {
     fetchWeather = (event) => {
         event.preventDefault();
         const { query } = this.state;
-        var apiKey = 'e7f6b2ade7d4404e80c9d27e0ad3d479';
-        var requestOne = axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${query}&appid=${apiKey}`);
-        var requestTwo = axios.get(`http://localhost:5000/home/search/${query}`);
+        //var apiKey = 'e7f6b2ade7d4404e80c9d27e0ad3d479';
+        //var requestOne = axios.get(`http://api.openweathermap.org/data/2.5/forecast?q=${query}&appid=${apiKey}`);
+        var requestTwo = `http://localhost:5000/home/search/${query}`;
 
-        axios.all([requestOne, requestTwo])
-            .then(axios.spread((weatherData, backendData) => {
-                this.setState({
-                //     //weather: weatherData.data
-                //     //city: weatherData.data.city,
-                    airportData: backendData.data,
-                //     //wind: weatherData.data.list.map(x => x.wind),
+        // axios.all([requestOne, requestTwo])
+        //     .then(axios.spread((weatherData, backendData) => {
+        //         this.setState({
+        //         //     //weather: weatherData.data
+        //         //     //city: weatherData.data.city,
+        //             airportData: backendData.data,
+        //         //     //wind: weatherData.data.list.map(x => x.wind),
+        //         visable: true
+        //         })
+        //         //console.log(this.state);
+        //     }))
+
+        axios.get(requestTwo)
+        .then(res => {
+            this.setState({
+                
+                airportData: res.data,
                 visable: true
-                })
-                //console.log(this.state);
-            }))
+            })
+            //console.log(this.state);
+        })
+        .catch(res => {
+            console.log(res)
+        })
     }
 
     render() {
@@ -49,7 +61,7 @@ class Home extends Component {
                         <form onSubmit={e => this.fetchWeather(e)} >
                             <div className="form-group">
                                 <label htmlFor="search">Enter Your City</label>
-                                <input value={this.state.query} onChange={e => this.setState({ query: e.target.value })} name="query" type="text" class="form-control" id="search" placeholder="Ex: Chicago" />
+                                <input value={this.state.query} onChange={e => this.setState({ query: e.target.value })} name="query" type="text" className="form-control" id="search" placeholder="Ex: Chicago" />
                                 <br/>
                                 <button className="btn btn-primary">Submit</button>                            
                             </div>
@@ -57,7 +69,7 @@ class Home extends Component {
                     </div>
                 </div>
                 { this.state.visable ? <Airports airportData={this.state.airportData}/> : null}
-                {/* { this.state.visable ? <New city={this.state.city}/> : null} */}
+                
             </div>
         );
     }

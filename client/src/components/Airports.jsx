@@ -1,7 +1,8 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 export default function Airports(props) {
-    console.log('my props', props);
+    //console.log('propss', props);
     return (
         <div className="row">
             <div className="col-sm-12">
@@ -11,7 +12,10 @@ export default function Airports(props) {
                     </li>
                     {
                         props.airportData.map(x => (
-                            <a href="#" className="list-group-item list-group-item-action">{x.airportName}</a>
+                            <Link to={{pathname: "details/{x.airportsId}", state: { cityName: x.airportCity, cityId: x.airportId }}} 
+                            className="list-group-item list-group-item-action">
+                            {x.airportName}
+                            </Link>
                         ))
                     }
                 </div>
