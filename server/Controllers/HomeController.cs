@@ -18,11 +18,25 @@ namespace HomeController.Controllers {
             _dbContext = context;
         }
 
-        [HttpGet ("search/{xx}")]
-        public IActionResult Search (string xx) {
+        [HttpGet ("search/{city}")]
+        public IActionResult SearchByCity (string city) {
 
-            var res = (from airportTable in _dbContext.Airports join runwayTable in _dbContext.Runways on airportTable.Ident equals runwayTable.AirportIdent where airportTable.Municipality == xx && airportTable.Type != "heliport" && airportTable.Type != "closed"
+            var airports = (from airportData in _dbContext.Airports where airportData.Municipality == city &&
+                airportData.Type != "heliport" &&
+                airportData.Type != "closed"
+                select new {
+                    airportName = airportData.Name,
+                        airportsId = airportData.Id
+                }).ToList ();
+            return Ok (airports);
+        }
 
+        [HttpGet ("details/{id}")]
+        public IActionResult GetTable (int id) {
+            var res = (from airportTable in _dbContext.Airports 
+                        join runwayTable in _dbContext.Runways 
+                        on airportTable.Ident equals runwayTable.AirportIdent 
+                        where airportTable.Id == id
                 select new {
                     airportName = airportTable.Name,
                         airportType = airportTable.Type,
@@ -44,20 +58,6 @@ namespace HomeController.Controllers {
             highEnd = g.Select (r => r.highEnd).Aggregate ((x, y) => x + "," + y)
             };
             return Ok (finalResult);
-        }
-
-        [HttpGet ("join")]
-        public IActionResult GetTable () {
-            List<Airports> airports = _dbContext.Airports.ToList ();
-            List<Runways> runways = _dbContext.Runways.ToList ();
-            var res = from data in airports
-            join st in runways
-            on data.Ident equals st.AirportIdent
-            select new { City = data.Municipality, he = st.AirportIdent };
-            foreach (var i in res) {
-                return Ok (i);
-            }
-            return Ok ();
         }
     }
 }
