@@ -1,35 +1,20 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { getWeather } from '../actions/weather';
 import Airports from './Airports';
+import { connect } from 'react-redux';
+
 
 class Home extends Component {
-    constructor(props) {
+    constructor(props){
         super(props);
-        this.state = {
-            weather: [],
-            airportData: [],
-            query: "",
-            city: [],
-            wind: [],
-            visable: false
-        }
-        this.fetchWeather = this.fetchWeather.bind(this);
+            this.state = {
+                query: ''
+            }
     }
-
     fetchWeather = (event) => {
         event.preventDefault();
         const { query } = this.state;
-        const requestTwo = `http://localhost:5000/home/search/${query}`;
-        axios.get(requestTwo)
-        .then(res => {
-            this.setState({ 
-                airportData: res.data,
-                visable: true
-            })
-        })
-        .catch(res => {
-            console.log(res)
-        })
+        getWeather(query);
     }
 
     render() {
@@ -44,7 +29,7 @@ class Home extends Component {
                         <form onSubmit={e => this.fetchWeather(e)} >
                             <div className="form-group">
                                 <label htmlFor="search">Enter Your City</label>
-                                <input value={this.state.query} onChange={e => this.setState({ query: e.target.value })} name="query" type="text" className="form-control" id="search" placeholder="Ex: Chicago" />
+                                <input value={this.props.query} onChange={e => this.setState({ query: e.target.value })} name="query" type="text" className="form-control" id="search" placeholder="Ex: Chicago" />
                                 <br/>
                                 <button className="btn btn-primary">Submit</button>                            
                             </div>
@@ -58,4 +43,8 @@ class Home extends Component {
     }
 }
 
-export default Home;
+const mapStateToProps = state => ({
+    query: state.query
+});
+
+export default connect(mapStateToProps, {getWeather})(Home);
