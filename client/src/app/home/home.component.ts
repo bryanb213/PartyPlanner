@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+  query: string;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  getAirports()
+  {
+    this.h
+    console.log();
   }
 
 }
