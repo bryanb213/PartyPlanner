@@ -2,14 +2,15 @@
     <div class="col-md-6">
         <h2>Welcome to picnic planner</h2>
         <p>check out the perfect days to picnic outside</p>
-        <form  #userForm="ngForm">
-            {{userForm.value | json}}
+        <form  #userForm="ngForm" (ngSubmit)="getAirports()">
+            {{userForm.value | json }}
             <div class="form-group">
                 <label for="city">Enter your city</label>
-                <input (click)="getAirports()" type="text" class="form-control" id="city" name="query" [(ngModel)]="query">
+                <input type="text" class="form-control" id="city" name="query" [(ngModel)]="query" />
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </div>
+<app-airports [data]="airports | async" ></app-airports>

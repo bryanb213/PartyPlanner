@@ -1,1 +1,3 @@
-<p>airports works!</p>
+<div [routerLink]="" *ngFor="let x of data">
+    <a [routerLink]="[x.airportId]" >{{x.airportName}}</a>
+</div>

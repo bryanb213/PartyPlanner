@@ -7,5 +7,10 @@ import { HttpClient } from '@angular/common/http';
 export class DataServiceService {
 
 constructor(private http: HttpClient) { }
+  private airports = 'http://localhost:5000/home/search/';
+
+  getAirports(query: string) {
+    return this.http.get(this.airports + query);
+  }
 
 }
