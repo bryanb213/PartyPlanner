@@ -8,9 +8,9 @@
                 <label for="city">Enter your city</label>
                 <input type="text" class="form-control" id="city" name="query" [(ngModel)]="query" />
             </div>
-
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
 </div>
-<app-airports [data]="airports | async" ></app-airports>
+
+<app-airports *ngIf="show" [data]="airports | async"></app-airports>

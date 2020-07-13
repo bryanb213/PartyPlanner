@@ -12,11 +12,11 @@ export class AirportsComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit(): void {
-    //console.log(this.data);
+
   }
 
   ngOnChanges(){
-    console.log(this.data);
+    console.log('from airports', this.data);
   }
 
 }

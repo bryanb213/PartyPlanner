@@ -1,3 +1,14 @@
-<div [routerLink]="" *ngFor="let x of data">
-    <a [routerLink]="[x.airportId]" >{{x.airportName}}</a>
+<!-- <div *ngFor="let x of data">
+    <a [routerLink]="[x.airportId]" [state]="{ data: x.airportCity, Id: x.airportId }">{{x.airportName}}</a>
+</div> -->
+
+
+<div class="list-group" >
+    <li class="list-group-item list-group-item-action active">
+        Cras justo odio
+    </li>
+    <div *ngFor="let x of data">
+        <a [routerLink]="[x.airportId]" [state]="{ data: x.airportCity, Id: x.airportId }" class="list-group-item list-group-item-action">{{x.airportName}}</a>
+    </div>
+    
 </div>

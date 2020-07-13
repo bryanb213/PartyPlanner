@@ -1,1 +1,6 @@
 <p>airport-details works!</p>
+<div *ngIf="todaysWeather$ | async as x">
+    <div>
+        {{x.base}}
+    </div>
+</div>

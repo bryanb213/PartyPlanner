@@ -8,8 +8,9 @@ import { DataServiceService } from '../DataService.service';
 })
 export class HomeComponent implements OnInit {
   query = '';
-  //KEY =  e7f6b2ade7d4404e80c9d27e0ad3d479
   airports: any;
+  show = false;
+
 
   constructor(private dataService: DataServiceService) { }
 
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit {
 
   getAirports() {
     this.airports = this.dataService.getAirports(this.query);
-    console.log(this.airports);
+    this.show = true;
     return this.airports;
   }
 
